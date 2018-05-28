@@ -11,6 +11,8 @@ vorpal
     console.log('Check Elysian');
     axios_1.default.get('http://app:5000').then((response) => {
         callback(response.data);
+    }).catch(() => {
+        callback('Cannot connect');
     });
 });
 vorpal
