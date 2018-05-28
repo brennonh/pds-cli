@@ -1,41 +1,18 @@
-import {Command, flags} from '@oclif/command'
+import axios from 'axios';
 
-class PdsCli extends Command {
-  static description = 'describe the command here'
+var vorpal = require('vorpal')();
 
-  static examples = [
-    `$ pds-cli
-hello world from ./src/pds-cli.ts!
-`,
-  ]
+vorpal
+  .command('health', 'Checks to see if Elysian running')
+  .action(function (args: any, callback: Function) {
+    console.log('Check Elysian');
+    axios.get('http://app:5000').then((response) => {
+      callback(response.data);
+    });    
+  });
 
-  static flags = {
-    // add --version flag to show CLI version
-    version: flags.version({char: 'v'}),
-    // add --help flag to show CLI version
-    help: flags.help({char: 'h'}),
 
-    // flag with a value (-n, --name=VALUE)
-    name: flags.string({char: 'n', description: 'name to print'}),
-    force: flags.boolean({char: 'f'}),
-  }
 
-  static args = [{name: 'file'}]
-
-  async run() {
-    var readline = require('readline');
-
-    var rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout
-    });
-
-    rl.question("Enter external DB URI: ", function(answer: any) {
-      rl.question("Enter project name: ", function(answer: any) {
-        rl.close();
-      });
-    });
-  }
-}
-
-export = PdsCli
+vorpal 
+  .delimiter('elysian$')
+  .show();
