@@ -3,7 +3,7 @@ FROM node:latest
 RUN mkdir /usr/src/cli
 WORKDIR /usr/src/cli
 COPY package*.json ./
+COPY dist /usr/src/cli/dist
 RUN npm install
-COPY . .
 CMD ["npm", "start"]
 
