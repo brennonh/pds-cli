@@ -7,7 +7,7 @@ var Memcached = require('memcached');
 var mongoose = require('mongoose');
 
 
-mongoose.connect(process.env.MONGODB_URI || '',
+var db = mongoose.connect('mongodb://db:27017/elysian' || '',
   { useNewUrlParser: true, reconnectTries: Number.MAX_VALUE, reconnectInterval: 1000, connectTimeoutMS: 2000, keepAlive: 1 })
   .catch(() => { });
 
@@ -73,11 +73,11 @@ vorpal
     });
   });
 
-  vorpal
+vorpal
   .command('audit', 'Test integrity of data')
   .action(function (args: any, callback: Function) {
     Transaction.find(
-      { },
+      {},
       function (error: Error, result: ITransactionModel[]) {
         var audit = new Array();
         if (error) {
@@ -167,7 +167,7 @@ vorpal
   .command('view-did <did>', 'view DID on blockchain')
   .action(function (args: any, callback: Function) {
 
-    axios.get('http://beta.cosmos.ixo.world:80/api/did/getByDid/'  + args.did)
+    axios.get(process.env.BLOCKCHAIN_URI_REST + args.did)
       .then((response) => {
         if (response.status == 200 && response.data.did != null) {
           callback(response.data)
@@ -188,7 +188,7 @@ vorpal
     });
   });
 
-  vorpal
+vorpal
   .command('rm-cache <key>', 'delete key from cache')
   .action(function (args: any, callback: Function) {
 
@@ -198,7 +198,7 @@ vorpal
     });
   });
 
-  vorpal
+vorpal
   .command('flush-cache', 'flush cache')
   .action(function (args: any, callback: Function) {
 
