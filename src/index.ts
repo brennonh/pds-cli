@@ -84,18 +84,21 @@ vorpal
           console.log("Error is " + error);
           callback(error);
         } else {
+          console.log('calculate hash                                                     element hash                                                       valid')
+          console.log('--------------------------------------------------------------------------------------------------------------------------------------------')
           let prevHash = '';
           result.forEach((element: any) => {
             let calHash = hash(prevHash + element.nonce.toString() + element.data);
             if (calHash === element.hash) {
-              audit.push(calHash + ' ' + 'true');
+              audit.push(calHash + ' | ' + element.hash + ' | ' + 'true');
             } else {
-              audit.push(calHash + ' ' + 'false');
+              audit.push(calHash + ' | ' + element.hash + ' | ' + 'false');
             }
             prevHash = element.hash;
           })
         }
-        callback(audit);
+        audit.forEach((x) => {console.log(x)})
+        callback('audit complete');
       });
   });
 
